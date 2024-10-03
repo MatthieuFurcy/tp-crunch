@@ -3,6 +3,7 @@
 
 int crunch(const std::string& alphabet, int minLen, int maxLen) {
     int combinaisons = 0;
+    int totalOctets = 0;
 
     // Boucle pour les différentes longueurs
     for (int len = minLen; len <= maxLen; len++) {
@@ -22,10 +23,11 @@ int crunch(const std::string& alphabet, int minLen, int maxLen) {
             }
             std::cout << combinaison << std::endl;
             combinaisons++;
+            totalOctets += len;  // Chaque combinaison prend `len` octets
         }
     }
     
-    std::cout << combinaisons << " combinaisons soit " << (combinaisons * (minLen + maxLen) / 2) << " octets" << std::endl;
+    std::cout << combinaisons << " combinaisons soit " << totalOctets << " octets" << std::endl;
     return combinaisons;
 }
 

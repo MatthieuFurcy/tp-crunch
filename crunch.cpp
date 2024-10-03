@@ -3,67 +3,56 @@
 
 using namespace std;
 
-/* 
- * Fonction crunch : génère toutes les combinaisons possibles d'une longueur donnée 
- * à partir d'un alphabet spécifié, entre une longueur minimale et maximale.
- * 
- * Paramètres :
- * - alphabet : une chaîne de caractères représentant l'ensemble des caractères utilisables.
- * - minLen : longueur minimale des combinaisons à générer.
- * - maxLen : longueur maximale des combinaisons à générer.
- * 
- * Retourne :
- * - Le nombre total de combinaisons générées.
- */
-int crunch(const string& alphabet, int minLen, int maxLen) {
-    int combinaisons = 0;  // Compteur pour le nombre total de combinaisons
-    int totalOctets = 0;   // Compteur pour le nombre total d'octets générés
-
-    // Boucle pour les différentes longueurs de combinaisons
-    for (int len = minLen; len <= maxLen; len++) {
-        int totalComb = 1;  // Initialisation du compteur de combinaisons pour la longueur actuelle
-
-        // Calcul du nombre total de combinaisons possibles pour la longueur `len`
-        for (int i = 0; i < len; i++) {
-            totalComb *= alphabet.size();  // Multiplie par la taille de l'alphabet à chaque position
-        }
-
-        // Génération et affichage des combinaisons
-        for (int i = 0; i < totalComb; i++) {
-            string combinaison = "";  // Réinitialisation de la combinaison
-            int temp = i;  // Utilisé pour calculer les indices des caractères
-
-            // Construction de la combinaison en fonction de l'index
-            for (int j = 0; j < len; j++) {
-                combinaison = alphabet[temp % alphabet.size()] + combinaison;  // Récupération du caractère
-                temp /= alphabet.size();  // Réduction de l'index pour la prochaine position
-            }
-
-            cout << combinaison << endl;  // Affichage de la combinaison générée
-            combinaisons++;  // Incrémentation du compteur de combinaisons
-            totalOctets += len;  // Chaque combinaison de `len` caractères compte pour `len` octets
-        }
+// Fonction qui génère les combinaisons possibles et calcule le nombre d'octets
+void crunch(string current, int min_len, int max_len, string characters, int &total_octets, int &total_combinations) {
+    if (current.length() >= min_len) {
+        cout << current << endl; // Affichage des combinaisons sur la sortie écran
+        total_combinations++;    // Compte du nombre de combinaisons
+        total_octets += current.length() + 1; // Calcul des octets (chaîne + '\n')
     }
-    
-    // Affichage du nombre total de combinaisons et d'octets
-    cout << combinaisons << " combinaisons soit " << totalOctets << " octets" << endl;
-    return combinaisons;  // Retourne le nombre total de combinaisons
+
+    if (current.length() == max_len) {
+        return;
+    }
+
+    for (char c : characters) {
+        crunch(current + c, min_len, max_len, characters, total_octets, total_combinations);
+    }
 }
 
-int main(int argc, char* argv[]) {
-    // Vérification du nombre d'arguments passés à la ligne de commande
-    if (argc != 4) {
-        cerr << "Usage: " << argv[0] << " <minLen> <maxLen> <alphabet>" << endl;  // Message d'erreur
-        return 1;  // Retourne une erreur si le nombre d'arguments est incorrect
+int main() {
+    string bibliotheque_systeme = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    string bibliotheque_utilisateur;
+    int longueur_min, longueur_max;
+    bool valide = true;
+    int total_octets = 0;       // Total des octets utilisés
+    int total_combinations = 0; // Total des combinaisons générées
+// Entrée des caractères
+    cout << "Entrez les caracteres que vous voulez utiliser pour composer vos combinaisons: ";
+    cin >> bibliotheque_utilisateur;
+
+    // Vérification des caractères
+    for (char c : bibliotheque_utilisateur) {
+        if (bibliotheque_systeme.find(c) == string::npos) {
+            valide = false;
+            break;
+        }
     }
 
-    // Récupération des arguments depuis la ligne de commande
-    int minLen = stoi(argv[1]);  // Convertit la chaîne d'arguments en entier pour la longueur minimale
-    int maxLen = stoi(argv[2]);  // Convertit la chaîne d'arguments en entier pour la longueur maximale
-    string alphabet = argv[3];    // Récupère l'alphabet passé en argument
+    if (!valide) {
+        cout << "Votre bibliotheque contient des caracteres non autorises" << endl;
+        return 1;
+    }
 
-    // Appel de la fonction crunch avec les arguments fournis
-    crunch(alphabet, minLen, maxLen);
+    // Entrée des longueurs
+    cout << "Entrez la longueur minimale et maximale des combinaisons: ";
+    cin >> longueur_min >> longueur_max;
 
-    return 0;  // Fin du programme
+    // Appel de la fonction crunch pour générer les combinaisons
+    crunch("", longueur_min, longueur_max, bibliotheque_utilisateur, total_octets, total_combinations);
+
+    // Affichage des résultats
+    cout << total_combinations << " combinaisons soit " << total_octets << " octets" << endl;
+
+    return 0;
 }

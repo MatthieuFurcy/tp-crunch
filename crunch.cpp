@@ -29,11 +29,19 @@ int crunch(const std::string& alphabet, int minLen, int maxLen) {
     return combinaisons;
 }
 
-int main() {
-    std::string alphabet = "ab";
-    int minLen = 2;
-    int maxLen = 4;
-    
+int main(int argc, char* argv[]) {
+    // Vérification du nombre d'arguments
+    if (argc != 4) {
+        std::cerr << "Usage: " << argv[0] << " <minLen> <maxLen> <alphabet>" << std::endl;
+        return 1;
+    }
+
+    // Récupération des arguments depuis la ligne de commande
+    int minLen = std::stoi(argv[1]);  // Convertit la chaîne en entier
+    int maxLen = std::stoi(argv[2]);
+    std::string alphabet = argv[3];   // Alphabet passé en argument
+
+    // Appel de la fonction crunch avec les arguments
     crunch(alphabet, minLen, maxLen);
 
     return 0;

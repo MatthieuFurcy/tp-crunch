@@ -7,12 +7,13 @@ int crunch(const std::string& alphabet, int minLen, int maxLen) {
 
     // Boucle pour les différentes longueurs
     for (int len = minLen; len <= maxLen; len++) {
-        // Boucle pour chaque combinaison possible de longueur `len`
         int totalComb = 1;
+
+        // Calcul du nombre total de combinaisons possibles pour la longueur `len`
         for (int i = 0; i < len; i++) {
-            totalComb *= alphabet.size();  // Calcul du nombre de combinaisons
+            totalComb *= alphabet.size();
         }
-        
+
         // Génération et affichage des combinaisons
         for (int i = 0; i < totalComb; i++) {
             std::string combinaison = "";
@@ -23,7 +24,7 @@ int crunch(const std::string& alphabet, int minLen, int maxLen) {
             }
             std::cout << combinaison << std::endl;
             combinaisons++;
-            totalOctets += len;  // Chaque combinaison prend `len` octets
+            totalOctets += len;  // Chaque combinaison de `len` caractères compte pour `len` octets
         }
     }
     

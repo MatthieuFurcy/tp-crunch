@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
 
-int crunch(const std::string& alphabet, int minLen, int maxLen) {
+using namespace std;
+
+int crunch(const string& alphabet, int minLen, int maxLen) {
     int combinaisons = 0;
     int totalOctets = 0;
 
@@ -16,33 +18,33 @@ int crunch(const std::string& alphabet, int minLen, int maxLen) {
 
         // Génération et affichage des combinaisons
         for (int i = 0; i < totalComb; i++) {
-            std::string combinaison = "";
+            string combinaison = "";
             int temp = i;
             for (int j = 0; j < len; j++) {
                 combinaison = alphabet[temp % alphabet.size()] + combinaison;
                 temp /= alphabet.size();
             }
-            std::cout << combinaison << std::endl;
+            cout << combinaison << endl;
             combinaisons++;
             totalOctets += len;  // Chaque combinaison de `len` caractères compte pour `len` octets
         }
     }
     
-    std::cout << combinaisons << " combinaisons soit " << totalOctets << " octets" << std::endl;
+    cout << combinaisons << " combinaisons soit " << totalOctets << " octets" << endl;
     return combinaisons;
 }
 
 int main(int argc, char* argv[]) {
     // Vérification du nombre d'arguments
     if (argc != 4) {
-        std::cerr << "Usage: " << argv[0] << " <minLen> <maxLen> <alphabet>" << std::endl;
+        cerr << "Usage: " << argv[0] << " <minLen> <maxLen> <alphabet>" << endl;
         return 1;
     }
 
     // Récupération des arguments depuis la ligne de commande
-    int minLen = std::stoi(argv[1]);  // Convertit la chaîne en entier
-    int maxLen = std::stoi(argv[2]);
-    std::string alphabet = argv[3];   // Alphabet passé en argument
+    int minLen = stoi(argv[1]);  // Convertit la chaîne en entier
+    int maxLen = stoi(argv[2]);
+    string alphabet = argv[3];   // Alphabet passé en argument
 
     // Appel de la fonction crunch avec les arguments
     crunch(alphabet, minLen, maxLen);
